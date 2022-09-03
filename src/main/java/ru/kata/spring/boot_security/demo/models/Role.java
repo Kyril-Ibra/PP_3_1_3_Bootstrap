@@ -43,10 +43,6 @@ public class Role implements GrantedAuthority {
         return roleName;
     }
 
-    public void setRoleName(String name) {
-        this.roleName = name;
-    }
-
     @Override
     public String toString() {
         return this.roleName;

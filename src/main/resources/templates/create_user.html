@@ -90,15 +90,6 @@
                         </label>
                     </div>
 
-                    <td>
-                        <label>Role
-                            <select size="2" multiple name="role" required="required">
-                                <option th:each="role : ${listRoles}" th:value="${role.id}" th:text="${role.roleName}">
-                                </option>
-                            </select>
-                        </label>
-                    </td>
-
                     <div class="box-footer">
                     <button type="submit" class="btn btn-primary">
                       Submit

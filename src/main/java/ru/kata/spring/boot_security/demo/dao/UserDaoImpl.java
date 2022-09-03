@@ -25,6 +25,8 @@ public class UserDaoImpl implements UserDao{
     public void saveUser(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
+        Role roleUser = findRoleByRoleName("ROLE_USER");
+        user.addRole(roleUser);
         entityManager.persist(user);
     }
 
