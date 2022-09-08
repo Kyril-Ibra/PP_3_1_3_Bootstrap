@@ -27,8 +27,6 @@ public class UserDaoImpl implements UserDao{
     public void saveUser(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-//        Role roleUser = findRoleByRoleName("ROLE_USER");
-//        user.addRole(roleUser);
         entityManager.persist(user);
     }
 
@@ -57,7 +55,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     @Transactional
-    public User findUserByUsername(String email) throws UsernameNotFoundException  {
+    public User findUserByEmail(String email) throws UsernameNotFoundException  {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         if (email == null) {
@@ -77,4 +75,6 @@ public class UserDaoImpl implements UserDao{
     public List<Role> getRoles() {
         return roleRepo.findAll();
     }
+
+
 }

@@ -9,6 +9,6 @@ public interface UserDao {
     void updateUser(User user);
     void deleteUserById(int id);
     List<User> getAllUsers();
-    User findUserByUsername(String name);
+    User findUserByEmail(String name);
 }
 

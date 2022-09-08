@@ -87,15 +87,15 @@
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-toggle="modal"
-                                            th:data-target="${'#edit' + user.id}">Edit
+                                            th:data-target="${'#updateUser' + user.id}">Edit
                                         </button>
 <!--modals starts from here-->      </td>
 
                                     <div class="edit-form">
 
-                                        <div class="modal fade" th:id="${'edit' + user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" th:id="${'updateUser' + user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <form th:action="@{admin/{id}/updateUser(id=${user.getId()})}"
-                                                  th:object="${user}" th:method="PATCH" >
+                                                   th:object="${user}" th:method="PATCH" >
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -178,29 +178,29 @@
 
                                                             <div class="form-group text-center">
                                                                 <label for="id1" class="col-form-label" ><b>ID</b></label>
-                                                                <input type="text" class="form-control" id="id1" name="id" th:value="${user.id}" disabled/>
+                                                                <input type="text" class="form-control" id="id1" name="id" th:value="*{id}" disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="name1" class="col-form-label"><b>First Name</b></label>
-                                                                <input type="text" class="form-control" id="name1" name="name" th:value="${user.name}"disabled/>
+                                                                <input type="text" class="form-control" id="name1" name="name" th:value="*{name}"disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="last_name1" class="col-form-label"><b>Last Name</b></label>
-                                                                <input type="text" class="form-control" id="last_name1" name="last_name" th:value="${user.lastName}" disabled/>
+                                                                <input type="text" class="form-control" id="last_name1" name="last_name" th:value="*{lastName}" disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="age1" class="col-form-label"><b>Age</b></label>
-                                                                <input type="text" class="form-control" id="age1" name="age" th:value="${user.age}" disabled/>
+                                                                <input type="text" class="form-control" id="age1" name="age" th:value="*{age}" disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="email1" class="col-form-label"><b>Email</b></label>
-                                                                <input type="text" class="form-control" id="email1" name="email" th:value="${user.email}" disabled/>
+                                                                <input type="text" class="form-control" id="email1" name="email" th:value="*{email}" disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="role1" class="col-form-label"><b>Role</b></label>
                                                                 <select multiple class="custom-select w-100"
                                                                         size="2" id="role1" name="role"
-                                                                        th:value="${user.roles}" disabled>
+                                                                        th:value="*{roles}" disabled>
                                                                     <option
                                                                             th:each="role : ${listRoles}"
                                                                             th:text="${role.getRoleName()}"
@@ -234,7 +234,7 @@
                                 <div class="row">
                                     <div style="margin: auto">
                                         <div class="card-body">
-                                            <form th:action="@{/admin/createNewUser}" th:object="${user}" method="POST">
+                                            <form th:action="@{/admin/createNewUser}" th:object="${newUser}" method="POST">
                                                 <div class="form-group text-center">
                                                     <label><b>First Name</b></label>
                                                     <p>
@@ -243,6 +243,7 @@
                                                                 type="text"
                                                                 name="name"
                                                                 class="form-control"
+                                                                th:field="*{name}"
                                                                 placeholder="First name"
                                                                 style="width: 350px;"
                                                         />
@@ -256,6 +257,7 @@
                                                                 type="text"
                                                                 name="lastName"
                                                                 class="form-control"
+                                                                th:field="*{lastName}"
                                                                 placeholder="Last name"
                                                                 style="width: 350px;"
                                                         />
@@ -269,6 +271,7 @@
                                                                 type="number"
                                                                 name="age"
                                                                 class="form-control"
+                                                                th:field="*{age}"
                                                                 placeholder="Age"
                                                                 style="width: 350px;"
                                                         />
@@ -279,9 +282,10 @@
                                                     <label><b>Email</b></label><p>
                                                     <label>
                                                         <input
-                                                                type="text"
+                                                                type="email"
                                                                 name="email"
                                                                 class="form-control"
+                                                                th:field="*{email}"
                                                                 placeholder="Email"
                                                                 style="width: 350px;"
                                                         />
@@ -292,9 +296,10 @@
                                                     <label><b>User Password</b></label><p>
                                                     <label>
                                                         <input
-                                                                type="text"
+                                                                type="password"
                                                                 name="password"
                                                                 class="form-control"
+                                                                th:field="*{password}"
                                                                 placeholder="Password"
                                                                 style="width: 350px;"
                                                         />
@@ -305,7 +310,7 @@
                                                     <label><b>Role</b></label><p>
                                                     <label>
                                                         <select multiple class="custom-select w-100"
-                                                                size="2" name="role">
+                                                                size="2" name="role" th:field="*{roles}">
                                                             <option
                                                                     th:each="role : ${listRoles}"
                                                                     th:text="${role.getRoleName()}"

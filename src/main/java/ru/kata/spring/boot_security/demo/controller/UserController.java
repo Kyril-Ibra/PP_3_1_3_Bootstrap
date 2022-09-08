@@ -25,32 +25,24 @@ public class UserController {
 
     @GetMapping("/admin")
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("listRoles", userService.getRoles());
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        model.addAttribute("user", userService.loadUserByUsername(email));
+        User user = (User) userService.loadUserByUsername(email);
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("listRoles", userService.getRoles());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("user", user);
         return "/admin";
     }
 
-    @GetMapping("/user")
-    public String getSingleUser(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        model.addAttribute("user", userService.loadUserByUsername(email));
-        return "/user";
-    }
-
-
     @PostMapping ("admin/createNewUser" )
-    public String saveUser (@ModelAttribute("user") User user) {
+    public String saveUser (User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @PostMapping("/admin/{id}/updateUser")
-    public String updateUserById(@PathVariable int id, @ModelAttribute("user") User user) {
+    public String updateUserById(User user) {
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -59,6 +51,14 @@ public class UserController {
     public String deleteUserById(@PathVariable("id") int id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/user")
+    public String getSingleUser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        model.addAttribute("user", userService.loadUserByUsername(email));
+        return "/user";
     }
 
     @GetMapping("/403")
