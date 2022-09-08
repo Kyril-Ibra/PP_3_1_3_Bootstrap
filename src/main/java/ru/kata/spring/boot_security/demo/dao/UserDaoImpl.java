@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import javax.persistence.EntityManager;
@@ -15,18 +16,19 @@ import java.util.List;
 public class UserDaoImpl implements UserDao{
     @PersistenceContext
     private EntityManager entityManager;
-    public UserDaoImpl() {
-    }
+    private final RoleRepository roleRepo;
 
     @Autowired
-    RoleRepository roleRepo;
+    public UserDaoImpl(RoleRepository roleRepo) {
+        this.roleRepo = roleRepo;
+    }
 
     @Override
     public void saveUser(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        Role roleUser = findRoleByRoleName("ROLE_USER");
-        user.addRole(roleUser);
+//        Role roleUser = findRoleByRoleName("ROLE_USER");
+//        user.addRole(roleUser);
         entityManager.persist(user);
     }
 
@@ -54,13 +56,16 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User findUserByUsername(String username) throws UsernameNotFoundException  {
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class);
-        query.setParameter("name", username);
-        if (username == null) {
+    @Transactional
+    public User findUserByUsername(String email) throws UsernameNotFoundException  {
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        if (email == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return query.getSingleResult();
+        User user = query.getSingleResult();
+        user.getRoles().size();
+        return user;
     }
 
     public Role findRoleByRoleName(String name) {

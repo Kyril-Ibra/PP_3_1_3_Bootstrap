@@ -17,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    //constructor injection:
+    //constructor injection
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -26,44 +26,36 @@ public class UserController {
     @GetMapping("/admin")
     public String getAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("listRoles", userService.getRoles());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        model.addAttribute("user", userService.loadUserByUsername(email));
         return "/admin";
     }
 
     @GetMapping("/user")
     public String getSingleUser(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        model.addAttribute("user", userService.loadUserByUsername(username));
+        String email = auth.getName();
+        model.addAttribute("user", userService.loadUserByUsername(email));
         return "/user";
     }
 
-    @GetMapping ("/admin/new")
-    public String createUser (@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("listRoles", userService.getRoles());
-        return "create_user";
-    }
 
-    @PostMapping ("/admin")
+    @PostMapping ("admin/createNewUser" )
     public String saveUser (@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("admin/edit/{id}")
-    public String editUserById(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("listRoles", userService.getRoles());
-        return "edit_user";
-    }
-
-    @PostMapping("/admin/{id}")
+    @PostMapping("/admin/{id}/updateUser")
     public String updateUserById(@PathVariable int id, @ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/admin";
     }
 
-
-    @GetMapping("/admin/{id}")
+    @PostMapping ("/admin/{id}/delete")
     public String deleteUserById(@PathVariable("id") int id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
@@ -72,5 +64,10 @@ public class UserController {
     @GetMapping("/403")
     public String error403() {
         return "403";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "/login";
     }
 }

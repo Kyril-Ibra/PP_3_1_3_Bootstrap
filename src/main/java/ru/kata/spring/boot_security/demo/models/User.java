@@ -15,14 +15,15 @@ public class User implements UserDetails {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column (name = "email")
-    private String email;
     @Column (name = "name")
     private String name;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "age")
+    private int age;
+    @Column (name = "email")
+    private String email;
     @Column(name = "password")
-    @NotNull
     private String password;
 
     @ManyToMany
@@ -34,7 +35,6 @@ public class User implements UserDetails {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -42,7 +42,6 @@ public class User implements UserDetails {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -50,34 +49,46 @@ public class User implements UserDetails {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int id) {
+        this.age = age;
     }
 
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    public String setPassword(String password) {
+        return this.password = password;
     }
 
     public Set<Role> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     public User() {
     }
-
-    public User(int id, String name, String lastName, String email, String password, Set<Role> roles) {
+    public User(int id, String name, String lastName, int age, String email, String password, Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -89,17 +100,8 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public String setPassword(String password) {
-        return this.password = password;
-    }
-
-    @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String name) {
-        User user = dao.findUserByUsername(name);
+    public UserDetails loadUserByUsername(String email) {
+        User user = dao.findUserByUsername(email);
         return user;
     }
 
