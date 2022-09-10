@@ -56,7 +56,7 @@ public class User implements UserDetails {
     public int getAge() {
         return age;
     }
-    public void setAge(int id) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -83,15 +83,6 @@ public class User implements UserDetails {
     }
 
     public User() {
-    }
-    public User(int id, String name, String lastName, int age, String email, String password, Set<Role> roles) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
     }
 
     @Override
@@ -124,7 +115,4 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 }

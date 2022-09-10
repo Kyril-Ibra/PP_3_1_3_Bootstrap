@@ -8,6 +8,7 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,35 +28,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int id) {
-        return this.dao.getUserById(id);
+        return dao.getUserById(id);
     }
 
     @Transactional
     @Override
     public void updateUser(User user) {
-        this.dao.updateUser(user);
+        dao.updateUser(user);
     }
 
     @Transactional
     @Override
     public void deleteUserById(int id) {
-        this.dao.deleteUserById(id);
+        dao.deleteUserById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return this.dao.getAllUsers();
+        return dao.getAllUsers();
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = dao.findUserByEmail(email);
-        return user;
+        return dao.findUserByEmail(email);
     }
 
     @Override
     public List<Role> getRoles() {
         return dao.getRoles();
+    }
+
+    public Set<Role> findRolesByName(String roleName) {
+        return dao.findRolesByName(roleName);
     }
 }
 

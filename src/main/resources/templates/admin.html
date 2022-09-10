@@ -89,7 +89,7 @@
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                             th:data-target="${'#updateUser' + user.id}">Edit
                                         </button>
-<!--modals starts from here-->      </td>
+                                     </td>
 
                                     <div class="edit-form">
 
@@ -108,23 +108,23 @@
 
                                                             <div class="form-group text-center">
                                                                 <label for="id" class="col-form-label" ><b>ID</b></label>
-                                                                <input type="text" class="form-control" id="id" name="id" th:value="${user.id}" disabled/>
+                                                                <input type="text" class="form-control" id="id" name="id" th:value="*{id}" disabled/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="name" class="col-form-label"><b>First Name</b></label>
-                                                                <input type="text" class="form-control" id="name" name="name" th:value="${user.name}"/>
+                                                                <input type="text" class="form-control" id="name" name="name" th:value="*{name}"/>
                                                             </div>
                                                             <div class="form-group text-center">
-                                                                <label for="last_name" class="col-form-label"><b>Last Name</b></label>
-                                                                <input type="text" class="form-control" id="last_name" name="last_name" th:value="${user.lastName}"/>
+                                                                <label for="lastName" class="col-form-label"><b>Last Name</b></label>
+                                                                <input type="text" class="form-control" id="lastName" name="lastName" th:value="*{lastName}"/>
                                                             </div>
                                                         <div class="form-group text-center">
                                                             <label for="age" class="col-form-label"><b>Age</b></label>
-                                                            <input type="number" class="form-control" id="age" name="age" th:value="${user.age}"/>
+                                                            <input type="number" class="form-control" id="age" name="age" th:value="*{age}"/>
                                                         </div>
                                                             <div class="form-group text-center">
                                                                 <label for="email" class="col-form-label"><b>Email</b></label>
-                                                                <input type="text" class="form-control" id="email" name="email" th:value="${user.email}"/>
+                                                                <input type="text" class="form-control" id="email" name="email" th:value="*{email}"/>
                                                             </div>
                                                             <div class="form-group text-center">
                                                                 <label for="password" class="col-form-label"><b>Password</b></label>
@@ -134,11 +134,11 @@
                                                             <label for="role" class="col-form-label"><b>Role</b></label>
                                                             <select multiple class="custom-select w-100"
                                                                     size="2" id="role" name="role"
-                                                                    th:value="${user.roles}">
+                                                                    th:value="*{roles}">
                                                                 <option
                                                                         th:each="role : ${listRoles}"
                                                                         th:text="${role.getRoleName()}"
-                                                                        th:value="${role.getId()}">
+                                                                        th:selected="${user.roles.contains(role)}">
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -228,7 +228,7 @@
                         </div>
                         </div>
                         <div class="tab-pane fade" id="new-user" role="tabpanel" aria-labelledby="new-user-tab">
-<!--check it out-->
+<!--new user-->
                             <div class="card">
                                 <div class="card-header"><h5>Add new user</h5></div>
                                 <div class="row">
