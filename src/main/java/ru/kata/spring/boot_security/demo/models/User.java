@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
     @Column (name = "email")
-    private String email;
+    private String username;
     @Column(name = "password")
     private String password;
 
@@ -56,15 +56,16 @@ public class User implements UserDetails {
     public int getAge() {
         return age;
     }
-    public void setAge(int id) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return username;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     @Override
@@ -84,25 +85,12 @@ public class User implements UserDetails {
 
     public User() {
     }
-    public User(int id, String name, String lastName, int age, String email, String password, Set<Role> roles) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

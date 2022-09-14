@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +16,7 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserServiceImpl userService;
+
     public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImpl userService) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
@@ -29,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/").authenticated()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER", "ADMIN")

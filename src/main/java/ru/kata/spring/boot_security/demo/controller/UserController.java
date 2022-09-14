@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+
+import java.security.Principal;
 
 
 @Controller
@@ -21,6 +24,14 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/user")
+    public String getSingleUser(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        model.addAttribute("user", userService.loadUserByUsername(email));
+        return "/user";
     }
 
     @GetMapping("/admin")
@@ -35,31 +46,28 @@ public class UserController {
         return "/admin";
     }
 
+
+
     @PostMapping ("admin/createNewUser" )
-    public String saveUser (User user) {
+    public String saveUser (@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @PostMapping("/admin/{id}/updateUser")
-    public String updateUserById(User user) {
+    @PatchMapping("/admin/{id}/updateUser")
+    public String updateUserById(User user, String role) {
+        user.setRoles(userService.findRolesByName(role));
         userService.updateUser(user);
         return "redirect:/admin";
     }
 
-    @PostMapping ("/admin/{id}/delete")
+    @DeleteMapping ("/admin/{id}/delete")
     public String deleteUserById(@PathVariable("id") int id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("/user")
-    public String getSingleUser(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        model.addAttribute("user", userService.loadUserByUsername(email));
-        return "/user";
-    }
+
 
     @GetMapping("/403")
     public String error403() {
@@ -70,4 +78,5 @@ public class UserController {
     public String loginPage() {
         return "/login";
     }
+
 }
